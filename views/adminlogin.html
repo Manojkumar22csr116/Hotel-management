@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: rgba(240, 248, 255, 0.548);
+            padding: 40px;
+            backdrop-filter:blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+    <title>Login - Hotel Management System</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Login</h1>
+        <form action="/adminlogin" method="post" onsubmit="return validateForm()">
+            <input type="text" name="username" placeholder="Username" pattern="[a-zA-Z0-9]+" title="Only alphanumeric characters are allowed" required>
+            <input type="password" name="password" placeholder="Password" minlength="6" required>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <script>
+        function validateForm() {
+            var usernamePattern = /^[a-zA-Z0-9]+$/;
+
+            var usernameInput = document.getElementsByName("username")[0];
+
+            if (!usernamePattern.test(usernameInput.value)) {
+                alert("Only alphanumeric characters are allowed in the username.");
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+</body>
+
+</html>

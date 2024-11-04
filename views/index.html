@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Hotel Management System</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Welcome to Our Hotel</h1>
+        <div class="home-section">
+            <h2>Available Rooms</h2>
+            <div id="roomsContainer">
+                <!-- Room data will be inserted here dynamically -->
+            </div>
+        </div>
+        <div id="roomDetailsContainer" class="room-details-container" style="display:none;">
+            <!-- Room details will be inserted here dynamically -->
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchAvailableRooms();
+        });
+
+        async function fetchAvailableRooms() {
+            try {
+                const response = await fetch('/getAvailableRooms');
+                const roomsData = await response.json();
+                displayRoomData(roomsData);
+            } catch (error) {
+                console.error('Error fetching rooms data:', error);
+            }
+        }
+
+        function displayRoomData(roomsData) {
+            const roomsContainer = document.getElementById('roomsContainer');
+            roomsContainer.innerHTML = ""; // Clear existing data
+
+            roomsData.forEach(room => {
+                const roomDiv = document.createElement('div');
+                roomDiv.className = 'room';
+                roomDiv.innerHTML = `
+                    <h3>Room ${room.roomNumber}</h3>
+                    <p>Type: ${room.roomType}</p>
+                    <p>Price: ${room.price}</p>
+                    <button class="action-button book-button" onclick="showRoomDetails('${room._id}')">Book Room</button>
+                `;
+                roomsContainer.appendChild(roomDiv);
+            });
+        }
+
+        async function showRoomDetails(roomId) {
+            try {
+                const response = await fetch(`/getRoomDetails/${roomId}`);
+                const room = await response.json();
+
+                const roomDetailsContainer = document.getElementById('roomDetailsContainer');
+                roomDetailsContainer.style.display = 'block';
+                roomDetailsContainer.innerHTML = `
+                    <h2>Room ${room.roomNumber}</h2>
+                    <img src="${room.photoUrl}" alt="Room Photo" class="room-photo">
+                    <p>Type: ${room.roomType}</p>
+                    <p>Price: ${room.price}</p>
+                    <p>Description: ${room.description}</p>
+                    <button class="action-button book-now-button" onclick="bookRoom('${room._id}')">Book Now</button>
+                `;
+            } catch (error) {
+                console.error('Error fetching room details:', error);
+            }
+        }
+
+        function bookRoom(roomId) {
+            // Redirect to the booking page with the selected room ID
+            window.location.href = `/booking.html?roomId=${roomId}`;
+        }
+    </script>
+</body>
+
+</html>
